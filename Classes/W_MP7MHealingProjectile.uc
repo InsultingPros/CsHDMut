@@ -1,0 +1,1 @@
+class W_MP7MHealingProjectile extends W_HealingProjectile;
