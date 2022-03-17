@@ -3,63 +3,15 @@ class ZED_Patriarch extends ZombieBoss_STANDARD;
 
 simulated function PostBeginPlay()
 {
-  local Vector AttachPos;
-
     super.PostBeginPlay();
-    // End:0xBE
-    if(Role < ROLE_Authority)
-    {
-        // End:0xBE
-        if(bUseExtendedCollision && MyExtCollision == none)
-        {
-            MyExtCollision = Spawn(class'ExtendedZCollision', self);
-            MyExtCollision.SetCollisionSize(ColRadius, ColHeight);
-            MyExtCollision.bHardAttach = true;
-            AttachPos = Location + (ColOffset >> Rotation);
-            MyExtCollision.SetLocation(AttachPos);
-            MyExtCollision.SetPhysics(0);
-            MyExtCollision.SetBase(self);
-            SavedExtCollision = MyExtCollision.bCollideActors;
-        }
-    }
-    //return;
+
+    class'ZedUtility'.static.SpawnClientExtendedZCollision(self);
 }
+
 
 simulated function bool IsHeadshotClient(Vector loc, Vector ray, optional float AdditionalScale)
 {
-    local Coords C;
-    local Vector HeadLoc, M, diff;
-    local float t, DotMM, Distance, adjustedScale;
-
-    // End:0x11
-    if(HeadBone == 'None')
-    {
-        return false;
-    }
-    C = GetBoneCoords(HeadBone);
-    adjustedScale = 1.0 + (FClamp(AdditionalScale, 0.0, 1.0) * (FMax(1.0, OnlineHeadshotScale) - 1.0));
-    HeadLoc = C.Origin + (((HeadHeight * HeadScale) * adjustedScale) * C.XAxis);
-    M = (2.0 * (CollisionHeight + CollisionRadius)) * ray;
-    diff = HeadLoc - loc;
-    t = M Dot diff;
-    // End:0x121
-    if(t > float(0))
-    {
-        DotMM = M Dot M;
-        // End:0x115
-        if(t < DotMM)
-        {
-            diff -= ((t / DotMM) * M);
-        }
-        // End:0x121
-        else
-        {
-            diff -= M;
-        }
-    }
-    Distance = Sqrt(diff Dot diff);
-    return Distance < ((HeadRadius * HeadScale) * adjustedScale);
-    //return;
+    return class'ZedUtility'.static.IsHeadshotClient(self, loc, ray, AdditionalScale);
 }
 
 function TakeDamageClient(int Damage, Pawn instigatedBy, Vector HitLocation, Vector Momentum, class<DamageType> DamageType, optional bool bIsHeadshot)
