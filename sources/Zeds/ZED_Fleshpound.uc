@@ -57,7 +57,7 @@ simulated function bool IsHeadshotClient(Vector loc, Vector ray, optional float 
     }
     Distance = Sqrt(diff Dot diff);
     return Distance < ((HeadRadius * HeadScale) * adjustedScale);
-    //return;    
+    //return;
 }
 
 function TakeDamageClient(int Damage, Pawn instigatedBy, Vector HitLocation, Vector Momentum, class<DamageType> DamageType, optional bool bIsHeadshot)
@@ -255,7 +255,7 @@ function TakeDamageClient(int Damage, Pawn instigatedBy, Vector HitLocation, Vec
     {
         StartCharging();
     }
-    //return;    
+    //return;
 }
 
 state ZombieDying
@@ -365,7 +365,7 @@ state ZombieDying
         {
             SetOverlayMaterial(DamageType.default.DamageOverlayMaterial, DamageType.default.DamageOverlayTime, true);
         }
-        //return;        
+        //return;
     }
-    stop;    
+    stop;
 }

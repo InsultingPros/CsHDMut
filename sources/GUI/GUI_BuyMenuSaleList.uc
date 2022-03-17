@@ -22,7 +22,7 @@ function int PopulateBuyables()
   else
   {
     PlayerVeterancy = class'KFVeterancyTypes';
-  
+
   }
 
   for (j = 0; j < KFLR.ItemForSale.Length; j++)

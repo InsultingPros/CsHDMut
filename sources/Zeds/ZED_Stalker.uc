@@ -179,7 +179,7 @@ function TakeDamageClient(int Damage, Pawn instigatedBy, Vector HitLocation, Vec
         }
     }
     TakeDamage(Damage, instigatedBy, HitLocation, Momentum, DamageType);
-    //return;    
+    //return;
 }
 
 state ZombieDying
@@ -280,5 +280,5 @@ state ZombieDying
       SetOverlayMaterial(DamageType.default.DamageOverlayMaterial, DamageType.default.DamageOverlayTime, true);
     }
   }
-    stop;    
+    stop;
 }

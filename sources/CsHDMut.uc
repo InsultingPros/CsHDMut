@@ -29,7 +29,7 @@ struct FixMeshStruct
   var Mesh Mesh;
   var array<Material> Skins;
 };
-var array<FixMeshStruct> MeshInfoSTD;	
+var array<FixMeshStruct> MeshInfoSTD;
 
 
 // ADDITION!!!
@@ -94,7 +94,7 @@ event PostBeginPlay()
     replCaps[replCaps.Length]= Caps(replacementArray[i].oldClass);
   }
 
-  // Replace all instances of the old specimens with the new ones 
+  // Replace all instances of the old specimens with the new ones
   for (i = 0; i < mcCaps.Length; i++)
   {
     for (k = 0; k < replCaps.Length; k++)
@@ -111,7 +111,7 @@ event PostBeginPlay()
   replaceSpecialSquad(KF.MonsterCollection.default.ShortSpecialSquads);
   replaceSpecialSquad(KF.MonsterCollection.default.NormalSpecialSquads);
   replaceSpecialSquad(KF.MonsterCollection.default.LongSpecialSquads);
-  replaceSpecialSquad(KF.MonsterCollection.default.FinalSquads);   
+  replaceSpecialSquad(KF.MonsterCollection.default.FinalSquads);
 
   // replace boss class
   KF.MonsterCollection.default.EndGameBossClass = string(class'ZED_Patriarch');
@@ -132,7 +132,7 @@ event PostBeginPlay()
   }
 
   // start the timer and modify pickups
-  SetTimer(0.10, false);   
+  SetTimer(0.10, false);
 }
 
 

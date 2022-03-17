@@ -22,7 +22,7 @@ simulated function PostBeginPlay()
             SavedExtCollision = MyExtCollision.bCollideActors;
         }
     }
-    //return;    
+    //return;
 }
 
 simulated function bool IsHeadshotClient(Vector loc, Vector ray, optional float AdditionalScale)
@@ -59,7 +59,7 @@ simulated function bool IsHeadshotClient(Vector loc, Vector ray, optional float 
     }
     Distance = Sqrt(diff Dot diff);
     return Distance < ((HeadRadius * HeadScale) * adjustedScale);
-    //return;    
+    //return;
 }
 
 function TakeDamageClient(int Damage, Pawn instigatedBy, Vector HitLocation, Vector Momentum, class<DamageType> DamageType, optional bool bIsHeadshot)
@@ -109,8 +109,8 @@ function TakeDamageClient(int Damage, Pawn instigatedBy, Vector HitLocation, Vec
                     // End:0x147
                     break;
                 }
-            }            
-        }        
+            }
+        }
     }
     // End:0x172
     if((class<DamTypeCrossbow>(DamageType) == none) && class<DamTypeCrossbowHeadShot>(DamageType) == none)
@@ -288,7 +288,7 @@ function TakeDamageClient(int Damage, Pawn instigatedBy, Vector HitLocation, Vec
         KFMonsterController(Controller).bUseFreezeHack = true;
         GotoState('KnockDown');
     }
-    //return;    
+    //return;
 }
 
 state ZombieDying
@@ -398,9 +398,9 @@ state ZombieDying
         {
             SetOverlayMaterial(DamageType.default.DamageOverlayMaterial, DamageType.default.DamageOverlayTime, true);
         }
-        //return;        
+        //return;
     }
-    stop;    
+    stop;
 }
 
 state FireChaingun
@@ -441,7 +441,7 @@ state FireChaingun
                 GotoState('Charging');
             }
         }
-        //return;        
+        //return;
     }
-    stop;    
+    stop;
 }

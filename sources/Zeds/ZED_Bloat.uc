@@ -22,7 +22,7 @@ simulated function PostBeginPlay()
             SavedExtCollision = MyExtCollision.bCollideActors;
         }
     }
-    //return;    
+    //return;
 }
 
 simulated function bool IsHeadshotClient(Vector loc, Vector ray, optional float AdditionalScale)
@@ -59,7 +59,7 @@ simulated function bool IsHeadshotClient(Vector loc, Vector ray, optional float 
     }
     Distance = Sqrt(diff Dot diff);
     return Distance < ((HeadRadius * HeadScale) * adjustedScale);
-    //return;    
+    //return;
 }
 
 function TakeDamageClient(int Damage, Pawn instigatedBy, Vector HitLocation, Vector Momentum, class<DamageType> DamageType, optional bool bIsHeadshot)
@@ -204,7 +204,7 @@ function TakeDamageClient(int Damage, Pawn instigatedBy, Vector HitLocation, Vec
         }
     }
     TakeDamage(Damage, instigatedBy, HitLocation, Momentum, DamageType);
-    //return;    
+    //return;
 }
 
 simulated function ToggleAuxCollision(bool newbCollision)
@@ -214,7 +214,7 @@ simulated function ToggleAuxCollision(bool newbCollision)
     {
         super(KFMonster).ToggleAuxCollision(newbCollision);
     }
-    //return;    
+    //return;
 }
 
 state ZombieDying
@@ -324,7 +324,7 @@ state ZombieDying
         {
             SetOverlayMaterial(DamageType.default.DamageOverlayMaterial, DamageType.default.DamageOverlayTime, true);
         }
-        //return;        
+        //return;
     }
-    stop;    
+    stop;
 }

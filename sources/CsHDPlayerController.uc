@@ -17,7 +17,7 @@ replication
 event PostBeginPlay()
 {
   super.PostBeginPlay();
-  
+
   if (((Role == ROLE_Authority) && !bDeleteMe) && bIsPlayer)
   {
     CsHDRI = spawn(class'CsHDReplicationInfo', self);

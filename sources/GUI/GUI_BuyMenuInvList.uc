@@ -21,7 +21,7 @@ function UpdateMyBuyables()
   foreach PlayerOwner().DynamicActors(class'KFLevelRules', LR)
   {
     break;
-  }    
+  }
 
   if (LR == none)
   {

@@ -273,7 +273,7 @@ state ZombieDying
     if (((DamageType.default.DamageOverlayMaterial != none) && Level.DetailMode != 0) && !Level.bDropDetail)
     {
       SetOverlayMaterial(DamageType.default.DamageOverlayMaterial, DamageType.default.DamageOverlayTime, true);
-    }    
+    }
   }
-  // stop;    
+  // stop;
 }
