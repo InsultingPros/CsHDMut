@@ -1,16 +1,6 @@
 class CsHDMut extends Mutator
-  config(CsHDMut);
+    config(CsHDMut);
 
-
-// struct that stores what a specific zed should be replaced with
-struct SZedPair
-{
-  var string oldClass;
-  var string newClass;
-};
-// array that stores all the replacement pairs
-var array<SZedPair> replacementArray;
-var array<string> replCaps;
 
 struct SPickupPair
 {
@@ -61,78 +51,42 @@ final private function dlog(string s)
 //                                  STARTUP
 //=============================================================================
 
-// all zed replacement code was copy-pasted from Scary Ghost:
-// https://github.com/scaryghost/SuperZombieMut/blob/master/Classes/SuperZombieMut.uc
 event PostBeginPlay()
 {
-  local int i,k;
-  local KFGameType KF;
-  local array<String> mcCaps;
+    local int i;
+    local KFGameType KF;
 
-  super.PostBeginPlay();
+    super.PostBeginPlay();
 
-  KF = KFGameType(Level.Game);
-  if (KF == none)
-  {
-    log("KFGameType not found, terminating!", self.name);
-    Destroy();
-    return;
-  }
-
-  if (KF.MonsterCollection == class'KFGameType'.default.MonsterCollection)
-  {
-    KF.MonsterCollection = class'CsHDMonstersCollection';
-  }
-
-  for (i = 0; i < KF.MonsterCollection.default.MonsterClasses.Length; i++)
-  {
-    mcCaps[mcCaps.Length] = caps(KF.MonsterCollection.default.MonsterClasses[i].MClassName);
-  }
-
-  for (i = 0; i < replacementArray.Length; i++)
-  {
-    replCaps[replCaps.Length]= Caps(replacementArray[i].oldClass);
-  }
-
-  // Replace all instances of the old specimens with the new ones
-  for (i = 0; i < mcCaps.Length; i++)
-  {
-    for (k = 0; k < replCaps.Length; k++)
+    KF = KFGameType(Level.Game);
+    if (KF == none)
     {
-      if (InStr(mcCaps[i], replCaps[k]) != -1)
-      {
-        log("> Replacing" @ KF.MonsterCollection.default.MonsterClasses[i].MClassName @ "with" @ replacementArray[k].newClass, self.name);
-        KF.MonsterCollection.default.MonsterClasses[i].MClassName = replacementArray[k].newClass;
-      }
+      log("KFGameType not found, terminating!", self.name);
+      Destroy();
+      return;
     }
-  }
 
-  // Replace the special squad arrays
-  replaceSpecialSquad(KF.MonsterCollection.default.ShortSpecialSquads);
-  replaceSpecialSquad(KF.MonsterCollection.default.NormalSpecialSquads);
-  replaceSpecialSquad(KF.MonsterCollection.default.LongSpecialSquads);
-  replaceSpecialSquad(KF.MonsterCollection.default.FinalSquads);
+    // change vanilla monster collection
+    if (KF.MonsterCollection == class'KFGameType'.default.MonsterCollection)
+    {
+      KF.MonsterCollection = class'CsHDMonstersCollection';
+    }
 
-  // replace boss class
-  KF.MonsterCollection.default.EndGameBossClass = string(class'ZED_Patriarch');
-  // replace fallback class
-  KF.MonsterCollection.default.FallbackMonsterClass = string(class'ZED_Stalker');
+    // shut down default event system
+    for (i = 0; i < KF.SpecialEventMonsterCollections.Length; i++)
+    {
+      KF.SpecialEventMonsterCollections[i] = KF.MonsterCollection;
+    }
 
-  // shut down default event system
-  for (i = 0; i < KF.SpecialEventMonsterCollections.Length; i++)
-  {
-    KF.SpecialEventMonsterCollections[i] = KF.MonsterCollection;
-  }
+    // add our controller class
+    if (!ClassIsChildOf(KF.PlayerControllerClass, class'CsHDPlayerController'))
+    {
+      KF.PlayerControllerClass = class'CsHDPlayerController';
+      KF.PlayerControllerClassName = string(class'CsHDPlayerController');
+    }
 
-  // add our controller class
-  if (!ClassIsChildOf(KF.PlayerControllerClass, class'CsHDPlayerController'))
-  {
-    KF.PlayerControllerClass = class'CsHDPlayerController';
-    KF.PlayerControllerClassName = string(class'CsHDPlayerController');
-  }
-
-  // start the timer and modify pickups
-  SetTimer(0.10, false);
+    // start the timer and modify pickups
+    SetTimer(0.10, false);
 }
 
 
@@ -267,29 +221,8 @@ simulated function Mesh GetDefaultMesh(class<KFMonster> KCM)
 
 
 //=============================================================================
-//                          REPLACING ZEDS n PICKUPS
+//                          REPLACING PICKUPS
 //=============================================================================
-
-// Replaces the zombies in the given squadArray
-final private function replaceSpecialSquad(out array<KFMonstersCollection.SpecialSquad> squadArray)
-{
-  local int i, j, k;
-
-  for (j = 0; j < squadArray.Length; j++)
-  {
-    for (i = 0; i < squadArray[j].ZedClass.Length; i++)
-    {
-      for (k = 0; k < replacementArray.Length; k++)
-      {
-        if (InStr(Caps(squadArray[j].ZedClass[i]), replCaps[k]) != -1)
-        {
-          squadArray[j].ZedClass[i] = replacementArray[k].newClass;
-        }
-      }
-    }
-  }
-}
-
 
 final private function ModifyPickupArray(out array< class<Pickup> > PickupArray)
 {
@@ -381,17 +314,6 @@ defaultproperties
   bAlwaysRelevant=True
   RemoteRole=ROLE_SimulatedProxy
   bAddToServerPackages=True
-
-  replacementArray(0)=(oldClass="KFChar.ZombieClot_STANDARD",newClass="CsHDMut.ZED_Clot")
-  replacementArray(1)=(oldClass="KFChar.ZombieGoreFast_STANDARD",newClass="CsHDMut.ZED_Gorefast")
-  replacementArray(2)=(oldClass="KFChar.ZombieBloat_STANDARD",newClass="CsHDMut.ZED_Bloat")
-  replacementArray(3)=(oldClass="KFChar.ZombieCrawler_STANDARD",newClass="CsHDMut.ZED_Crawler")
-  replacementArray(4)=(oldClass="KFChar.ZombieStalker_STANDARD",newClass="CsHDMut.ZED_Stalker")
-  replacementArray(5)=(oldClass="KFChar.ZombieSiren_STANDARD",newClass="CsHDMut.ZED_Siren")
-  replacementArray(6)=(oldClass="KFChar.ZombieHusk_STANDARD",newClass="CsHDMut.ZED_Husk")
-  replacementArray(7)=(oldClass="KFChar.ZombieScrake_STANDARD",newClass="CsHDMut.ZED_Scrake")
-  replacementArray(8)=(oldClass="KFChar.ZombieFleshPound_STANDARD",newClass="CsHDMut.ZED_Fleshpound")
-  replacementArray(9)=(oldClass="KFChar.ZombieBoss_STANDARD",newClass="CsHDMut.ZED_Patriarch")
 
   W_Array(0)=(PickupClass=class'KFMod.MP7MPickup',Replacement=class'W_MP7MPickup')
   W_Array(1)=(PickupClass=class'KFMod.MP5MPickup',Replacement=class'W_MP5MPickup')
