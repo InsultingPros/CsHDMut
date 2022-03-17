@@ -1,27 +1,14 @@
 class CsHDRandomItemSpawn extends KFRandomItemSpawn;
 
 
-simulated function PostBeginPlay()
-{
-  local byte i;
-
-  for (i = 0; i < ArrayCount(default.PickupClasses); i++)
-  {
-    default.PickupClasses[i] = class'CsHDMut'.static.GetPickupReplacement(default.PickupClasses[i]);
-
-    if (class<KFWeaponPickup>(default.PickupClasses[i]) != none)
-    {
-      default.PickupWeight[i] = int(class<KFWeaponPickup>(default.PickupClasses[i]).default.Weight);
-    }
-  }
-  super.PostBeginPlay();
-}
-
-
 defaultproperties
 {
-  PickupClasses[1]=class'KFMod.BullpupPickup'
-  PickupClasses[2]=class'KFMod.DeaglePickup'
-  PickupClasses[3]=class'KFMod.WinchesterPickup'
-  PickupClasses[4]=class'KFMod.Vest'
+    PickupClasses(0)=Class'W_DualiesPickup'
+    PickupClasses(1)=Class'KFMod.ShotgunPickup'
+    PickupClasses(2)=Class'W_BullpupPickup'
+    PickupClasses(3)=Class'W_DeaglePickup'
+    PickupClasses(4)=Class'W_WinchesterPickup'
+    PickupClasses(5)=Class'KFMod.AxePickup'
+    PickupClasses(6)=Class'KFMod.MachetePickup'
+    PickupClasses(7)=Class'KFMod.Vest'
 }

@@ -9,3 +9,5 @@
 - Updated README with additional info.
 - Reduced amount of copy-paste code.
 - Added default config file.
+- Separate config for player controller class. Will prevent polluting vanilla User.ini.
+- Removed unused code.

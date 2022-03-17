@@ -1,5 +1,5 @@
 class CsHDPlayerController extends KFPlayerController
-  config(User)
+  config(CsHDUser)
   dependson(CsHDMut);
 
 
