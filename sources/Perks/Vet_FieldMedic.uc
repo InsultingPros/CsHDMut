@@ -21,6 +21,6 @@ static function AddDefaultInventory(KFPlayerReplicationInfo KFPRI, Pawn P)
 
   if (KFPRI.ClientVeteranSkillLevel == 6)
   {
-    KFHumanPawn(P).CreateInventoryVeterancy("CsHDMut.W_MP7MMedicGun", default.StartingWeaponSellPriceLevel6);
+    KFHumanPawn(P).CreateInventoryVeterancy(string(class'W_MP7MMedicGun'), default.StartingWeaponSellPriceLevel6);
   }
 }

@@ -16,7 +16,7 @@ static function AddDefaultInventory(KFPlayerReplicationInfo KFPRI, Pawn P)
 {
   if (KFPRI.ClientVeteranSkillLevel == 5)
   {
-    KFHumanPawn(P).CreateInventoryVeterancy("CsHDMut.W_Winchester", default.StartingWeaponSellPriceLevel5);
+    KFHumanPawn(P).CreateInventoryVeterancy(string(class'W_Winchester'), default.StartingWeaponSellPriceLevel5);
   }
   else
   {

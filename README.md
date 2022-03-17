@@ -1,4 +1,4 @@
-# CsHDMut
+# Client Side Hit Detection Mut
 
 Client side hit detection for Killing Floor 1.
 

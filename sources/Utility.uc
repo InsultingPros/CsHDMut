@@ -120,11 +120,11 @@ final static function class<KFVeterancyTypes> GetVetReplacement(class<KFVeteranc
 
 defaultproperties
 {
-  Vet_Array(0)=class'CsHDMut.Vet_FieldMedic'
-  Vet_Array(1)=class'CsHDMut.Vet_SupportSpec'
-  Vet_Array(2)=class'CsHDMut.Vet_Sharpshooter'
-  Vet_Array(3)=class'CsHDMut.Vet_Commando'
-  Vet_Array(4)=class'CsHDMut.Vet_Berserker'
-  Vet_Array(5)=class'CsHDMut.Vet_Firebug'
-  Vet_Array(6)=class'CsHDMut.Vet_Demolitions'
+  Vet_Array(0)=class'Vet_FieldMedic'
+  Vet_Array(1)=class'Vet_SupportSpec'
+  Vet_Array(2)=class'Vet_Sharpshooter'
+  Vet_Array(3)=class'Vet_Commando'
+  Vet_Array(4)=class'Vet_Berserker'
+  Vet_Array(5)=class'Vet_Firebug'
+  Vet_Array(6)=class'Vet_Demolitions'
 }

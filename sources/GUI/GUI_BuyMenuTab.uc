@@ -24,7 +24,7 @@ defaultproperties
     WinWidth=0.328204
     WinHeight=0.521856
   End Object
-  InvSelect=GUI_BuyMenuInvListBox'CsHDMut.GUI_BuyMenuTab.InventoryBox'
+  InvSelect=InventoryBox
 
   Begin Object Class=GUI_BuyMenuSaleListBox Name=SaleBox
     OnCreateComponent=SaleBox.InternalOnCreateComponent
@@ -33,5 +33,5 @@ defaultproperties
     WinWidth=0.325857
     WinHeight=0.674039
   End Object
-  SaleSelect=GUI_BuyMenuSaleListBox'CsHDMut.GUI_BuyMenuTab.SaleBox'
+  SaleSelect=SaleBox
 }

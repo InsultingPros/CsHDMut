@@ -16,13 +16,13 @@ static function AddDefaultInventory(KFPlayerReplicationInfo KFPRI, Pawn P)
 {
   if (KFPRI.ClientVeteranSkillLevel == 5)
   {
-    KFHumanPawn(P).CreateInventoryVeterancy("CsHDMut.W_Bullpup", default.StartingWeaponSellPriceLevel5);
+    KFHumanPawn(P).CreateInventoryVeterancy(string(class'W_Bullpup'), default.StartingWeaponSellPriceLevel5);
   }
   else
   {
     if (KFPRI.ClientVeteranSkillLevel == 6)
     {
-      KFHumanPawn(P).CreateInventoryVeterancy("CsHDMut.W_AK47AssaultRifle", default.StartingWeaponSellPriceLevel6);
+      KFHumanPawn(P).CreateInventoryVeterancy(string(class'W_AK47AssaultRifle'), default.StartingWeaponSellPriceLevel6);
     }
   }
 }
