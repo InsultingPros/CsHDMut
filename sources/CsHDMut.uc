@@ -2,15 +2,15 @@ class CsHDMut extends Mutator
     config(CsHDMut);
 
 
+// headshot hitzone scale
+var config float AdditionalScale;
+
 struct SPickupPair
 {
   var class<Pickup> PickupClass;
   var class<Pickup> Replacement;
 };
-
 var array<SPickupPair> W_Array;
-// headshot hitzone scale
-var config float AdditionalScale;
 
 
 //=============================================================================
