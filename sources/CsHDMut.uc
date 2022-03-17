@@ -33,19 +33,6 @@ enum ESpecialEventType
 
 var ESpecialEventType SpecialEventType;
 
-//=============================================================================
-//                                  DEBUG
-//=============================================================================
-
-var private bool bDebug;
-
-
-final private function dlog(string s)
-{
-  if (bDebug)
-    log("> CSHDMut: " $ s);
-}
-
 
 //=============================================================================
 //                                  STARTUP
@@ -306,8 +293,6 @@ static event string GetDescriptionText(string Property)
 
 defaultproperties
 {
-  bDebug=True
-
   GroupName="KFCsHDMut"
   FriendlyName="CsHDMut 0.5.0"
   Description="Client-side hit detection."
