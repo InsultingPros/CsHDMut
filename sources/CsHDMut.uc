@@ -13,27 +13,6 @@ var array<SPickupPair> W_Array;
 var config float AdditionalScale;
 
 
-struct FixMeshStruct
-{
-  var class<KFMonster> M;
-  var Mesh Mesh;
-  var array<Material> Skins;
-};
-var array<FixMeshStruct> MeshInfoSTD;
-
-
-// ADDITION!!!
-enum ESpecialEventType
-{
-  ET_None,
-  ET_SummerSideshow,
-  ET_HillbillyHorror,
-  ET_TwistedChristmas
-};
-
-var ESpecialEventType SpecialEventType;
-
-
 //=============================================================================
 //                                  STARTUP
 //=============================================================================
@@ -119,91 +98,6 @@ function bool CheckReplacement(Actor Other, out byte bSuperRelevant)
     }
   }
   return true;
-}
-
-
-// attempt to load required mesh / combiner, aka custom event system without event zed classes
-// https://github.com/OperatsiyaY/MonsterConfig/blob/master/classes/MonsterConfig.uc#L368
-simulated function LoadZedAssets(KFMonster M)
-{
-  local Mesh tMesh;
-  local array<Material> tSkins;
-  local int i;
-
-  if (M.Mesh == none)
-  {
-    tMesh = GetDefaultMesh(M.Class);
-    M.UpdateDefaultMesh(tMesh);
-    M.static.UpdateDefaultMesh(tMesh);
-    M.Class.static.UpdateDefaultMesh(tMesh);
-    M.LinkMesh(tMesh);
-  }
-  if (M.Skins[0] == none)
-  {
-    GetDefaultSkins(M.Class, tSkins);
-    for (i = 0; i < tSkins.Length; i++)
-    {
-      M.Skins[i] = tSkins[i];
-      M.default.Skins[i] = tSkins[i];
-    }
-  }
-}
-
-
-simulated function GetDefaultSkins(class<KFMonster> KCM, out array<Material> Skins)
-{
-  local int i, j;
-
-  if (KCM == none)
-    return;
-
-  for (i = 0; i < MeshInfoSTD.Length; i++)
-  {
-    if (ClassIsChildOf(KCM, MeshInfoSTD[i].M))
-    {
-      for (j = 0; j < MeshInfoSTD[i].Skins.Length; j++)
-      {
-        Skins[Skins.length] = MeshInfoSTD[i].Skins[j];
-      }
-    }
-  }
-}
-
-
-simulated function Mesh GetDefaultMesh(class<KFMonster> KCM)
-{
-  // local int i;
-
-  if (KCM == none)
-    return none;
-
-  // if (KCM.Default.Mesh != none)
-  // 	return KCM.Default.Mesh;
-  if (SpecialEventType == ET_None)
-  {
-    if (class<ZombieBloatBase>(KCM) != none)
-      return Mesh'Bloat_Freak';
-    else if (class<ZombieBossBase>(KCM) != none)
-      return Mesh'Patriarch_Freak';
-    else if (class<ZombieClotBase>(KCM) != none)
-      return Mesh'CLOT_Freak';
-    else if (class<ZombieCrawlerBase>(KCM) != none)
-      return Mesh'Crawler_Freak';
-    else if (class<ZombieFleshPoundBase>(KCM) != none)
-      return Mesh'FleshPound_Freak';
-    else if (class<ZombieGorefastBase>(KCM) != none)
-      return Mesh'GoreFast_Freak';
-    else if (class<ZombieHuskBase>(KCM) != none)
-      return Mesh'Burns_Freak';
-    else if (class<ZombieScrakeBase>(KCM) != none)
-      return Mesh'Scrake_Freak';
-    else if (class<ZombieSirenBase>(KCM) != none)
-      return Mesh'Siren_Freak';
-    else if (class<ZombieStalkerBase>(KCM) != none)
-      return Mesh'Stalker_Freak';
-  }
-
-  return none;
 }
 
 
@@ -330,15 +224,4 @@ defaultproperties
   W_Array(27)=(PickupClass=class'KFMod.SCARMK17Pickup',Replacement=class'W_SCARMK17Pickup')
   W_Array(28)=(PickupClass=class'KFMod.FNFAL_ACOG_Pickup',Replacement=class'W_FNFAL_ACOG_Pickup')
   W_Array(29)=(PickupClass=class'KFMod.SyringePickup',Replacement=class'W_SyringePickup')
-
-  MeshInfoSTD(0)=(M=Class'KFChar.ZombieClot',Mesh=SkeletalMesh'KF_Freaks_Trip.CLOT_Freak',Skins=(Combiner'KF_Specimens_Trip_T.clot_cmb'))
-  MeshInfoSTD(1)=(M=Class'KFChar.ZombieGorefast',Mesh=SkeletalMesh'KF_Freaks_Trip.GoreFast_Freak',Skins=(Combiner'KF_Specimens_Trip_T.gorefast_cmb'))
-  MeshInfoSTD(2)=(M=Class'KFChar.ZombieCrawler',Mesh=SkeletalMesh'KF_Freaks_Trip.Crawler_Freak',Skins=(Combiner'KF_Specimens_Trip_T.crawler_cmb'))
-  MeshInfoSTD(3)=(M=Class'KFChar.ZombieBloat',Mesh=SkeletalMesh'KF_Freaks_Trip.Bloat_Freak',Skins=(Combiner'KF_Specimens_Trip_T.bloat_cmb'))
-  MeshInfoSTD(4)=(M=Class'KFChar.ZombieStalker',Mesh=SkeletalMesh'KF_Freaks_Trip.Stalker_Freak',Skins=(Shader'KF_Specimens_Trip_T.stalker_invisible',Shader'KF_Specimens_Trip_T.stalker_invisible'))
-  MeshInfoSTD(5)=(M=Class'KFChar.ZombieSiren',Mesh=SkeletalMesh'KF_Freaks_Trip.Siren_Freak',Skins=(FinalBlend'KF_Specimens_Trip_T.siren_hair_fb',Combiner'KF_Specimens_Trip_T.siren_cmb'))
-  MeshInfoSTD(6)=(M=Class'KFChar.ZombieHusk',Mesh=SkeletalMesh'KF_Freaks2_Trip.Burns_Freak',Skins=(Texture'KF_Specimens_Trip_T_Two.burns.burns_tatters',Shader'KF_Specimens_Trip_T_Two.burns.burns_shdr'))
-  MeshInfoSTD(7)=(M=Class'KFChar.ZombieScrake',Mesh=SkeletalMesh'KF_Freaks_Trip.Scrake_Freak',Skins=(Shader'KF_Specimens_Trip_T.scrake_FB',TexPanner'KF_Specimens_Trip_T.scrake_saw_panner'))
-  MeshInfoSTD(8)=(M=Class'KFChar.ZombieFleshPound',Mesh=SkeletalMesh'KF_Freaks_Trip.FleshPound_Freak',Skins=(Combiner'KF_Specimens_Trip_T.fleshpound_cmb',Shader'KFCharacters.FPAmberBloomShader'))
-  MeshInfoSTD(9)=(M=Class'KFChar.ZombieBoss',Mesh=SkeletalMesh'KF_Freaks_Trip.Patriarch_Freak',Skins=(Combiner'KF_Specimens_Trip_T.gatling_cmb',Combiner'KF_Specimens_Trip_T.patriarch_cmb'))
 }
