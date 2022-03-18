@@ -4,8 +4,6 @@
 
 Client side hit detection for Killing Floor 1.
 
-Originally created by [a1eat0r](http://steamcommunity.com/profiles/76561198065101703).
-
 ## Changelog
 
 You can view complete changelog [here](Docs/CHANGELOG.md).
@@ -19,3 +17,7 @@ Use [KF Compile Tool](https://github.com/InsultingPros/KFCompileTool) (with `bAl
 ```cpp
 EditPackages=CsHDMut
 ```
+
+## Credits
+
+Originally created by [a1eat0r](http://steamcommunity.com/profiles/76561198065101703): TWI forum [link](https://forums.tripwireinteractive.com/index.php?threads/mutator-client-side-hit-detection.101024/).
