@@ -1,3 +1,4 @@
+// Source lives here: https://github.com/InsultingPros/CsHDMut
 class CsHDMut extends Mutator
     config(CsHDMut);
 
