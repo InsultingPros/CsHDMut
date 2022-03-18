@@ -1,5 +1,7 @@
 # Client Side Hit Detection Mut
 
+![GitHub all releases](https://img.shields.io/github/downloads/InsultingPros/CsHDMut/total)
+
 Client side hit detection for Killing Floor 1.
 
 Originally created by [a1eat0r](http://steamcommunity.com/profiles/76561198065101703).
