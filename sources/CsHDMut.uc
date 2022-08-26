@@ -6,12 +6,19 @@ class CsHDMut extends Mutator
 // headshot hitzone scale
 var config float AdditionalScale;
 
-struct SPickupPair
+struct SWeaponPair
 {
-  var class<Pickup> PickupClass;
-  var class<Pickup> Replacement;
+  var class<KFWeapon> replWeapon;
+  var class<WeaponFire> replFire;
 };
-var array<SPickupPair> W_Array;
+var array<SWeaponPair> W_Array;
+
+// struct SPickupPair
+// {
+//   var class<Pickup> oldClass;
+//   var class<Pickup> newClass;
+// };
+// var array<SPickupPair> W_Array;
 
 
 //=============================================================================
@@ -64,41 +71,58 @@ event PostBeginPlay()
 simulated function Timer()
 {
   super(Actor).Timer();
-  ModifyLevelRules();
+  // ModifyLevelRules();
+}
+
+// change Fire class for choosen weapons
+final private function replFireClass(KFWeapon W)
+{
+    local int i;
+
+    log(">>> CsHDMut: WeaponUtility: replFireClass: we started!");
+    for (i = 0; i < W_Array.Length; i++)
+    {
+        if (W.class == W_Array[i].replWeapon)
+        {
+            W.FireModeClass[0] = W_Array[i].replFire;
+            log(">>> CsHDMut: WeaponUtility: replFireClass: replacing fire class for " $ W.class $ " to " $ default.W_Array[i].replFire);
+        }
+    }
 }
 
 
-function bool CheckReplacement(Actor Other, out byte bSuperRelevant)
+simulated function bool CheckReplacement(Actor Other, out byte bSuperRelevant)
 {
-  local byte i;
+    // local byte i;
 
-  if ((KFWeaponPickup(Other) != none) && Left(string(Other.class), 6) ~= "KFMod.")
-  {
-    for (i = 0; i < default.W_Array.Length; i++)
+    // if (Other.class == class'KFRandomItemSpawn')
+    // {
+    //     ReplaceWith(Other, string(class'CsHDRandomItemSpawn'));
+    //     return false;
+    // }
+    if (Other.class == class'CsHDReplicationInfo')
     {
-      if (default.W_Array[i].PickupClass == Other.class)
-      {
-        ReplaceWith(Other, string(default.W_Array[i].Replacement));
-        return false;
-      }
-    }
-  }
-  else
-  {
-    if (Other.class == class'KFRandomItemSpawn')
-    {
-      ReplaceWith(Other, string(class'CsHDRandomItemSpawn'));
-      return false;
-    }
-    else
-    {
-      if (Other.class == class'CsHDReplicationInfo')
-      {
         CsHDReplicationInfo(Other).AdditionalScale = AdditionalScale;
-      }
     }
-  }
-  return true;
+    else if (KFWeapon(Other) != none)
+    {
+      log(">>> CsHDMut: CheckReplacement: weapon was not none! : " $ KFWeapon(Other));
+      replFireClass(KFWeapon(Other));
+    }
+    // else if ((Pickup(Other) != none))
+    // {
+    //     for (i = 0; i < W_Array.Length; i++)
+    //     {
+    //         if (W_Array[i].oldClass == Other.class)
+    //         {
+    //             log(">>> CsHDMut: CheckReplacement: replacing pickup " $ KFWeaponPickup(Other).name $ " with " $ W_Array[i].newClass);
+    //             ReplaceWith(Other, string(W_Array[i].newClass));
+    //             return false;
+    //         }
+    //     }
+    // }
+
+    return true;
 }
 
 
@@ -106,57 +130,57 @@ function bool CheckReplacement(Actor Other, out byte bSuperRelevant)
 //                          REPLACING PICKUPS
 //=============================================================================
 
-final private function ModifyPickupArray(out array< class<Pickup> > PickupArray)
-{
-  local byte i;
+// final private function ModifyPickupArray(out array< class<Pickup> > PickupArray)
+// {
+//   local byte i;
 
-  for (i = 0; i < PickupArray.Length; i++)
-  {
-    if (PickupArray[i] != none)
-    {
-      PickupArray[i] = GetPickupReplacement(PickupArray[i]);
-    }
-  }
-}
-
-
-final static function class<Pickup> GetPickupReplacement(class<Pickup> PickupClass)
-{
-  local byte i;
-
-  if (PickupClass != none)
-  {
-    for (i = 0; i < default.W_Array.Length; i++)
-    {
-      if (default.W_Array[i].PickupClass == PickupClass)
-      {
-        return default.W_Array[i].Replacement;
-      }
-    }
-  }
-  return none;
-}
+//   for (i = 0; i < PickupArray.Length; i++)
+//   {
+//     if (PickupArray[i] != none)
+//     {
+//       PickupArray[i] = GetPickupReplacement(PickupArray[i]);
+//     }
+//   }
+// }
 
 
-simulated function ModifyLevelRules()
-{
-  local KFLevelRules LR;
+// final private function class<Pickup> GetPickupReplacement(class<Pickup> oldClass)
+// {
+//   local byte i;
 
-  foreach DynamicActors(class'KFLevelRules', LR)
-  {
-    if (LR != none)
-    {
-      ModifyPickupArray(LR.MediItemForSale);
-      ModifyPickupArray(LR.SuppItemForSale);
-      ModifyPickupArray(LR.ShrpItemForSale);
-      ModifyPickupArray(LR.CommItemForSale);
-      ModifyPickupArray(LR.BersItemForSale);
-      ModifyPickupArray(LR.FireItemForSale);
-      ModifyPickupArray(LR.DemoItemForSale);
-      ModifyPickupArray(LR.NeutItemForSale);
-    }
-  }
-}
+//   if (oldClass != none)
+//   {
+//     for (i = 0; i < W_Array.Length; i++)
+//     {
+//       if (W_Array[i].oldClass == oldClass)
+//       {
+//         return W_Array[i].newClass;
+//       }
+//     }
+//   }
+//   return none;
+// }
+
+
+// simulated function ModifyLevelRules()
+// {
+//   local KFLevelRules LR;
+
+//   foreach DynamicActors(class'KFLevelRules', LR)
+//   {
+//     if (LR != none)
+//     {
+//       ModifyPickupArray(LR.MediItemForSale);
+//       ModifyPickupArray(LR.SuppItemForSale);
+//       ModifyPickupArray(LR.ShrpItemForSale);
+//       ModifyPickupArray(LR.CommItemForSale);
+//       ModifyPickupArray(LR.BersItemForSale);
+//       ModifyPickupArray(LR.FireItemForSale);
+//       ModifyPickupArray(LR.DemoItemForSale);
+//       ModifyPickupArray(LR.NeutItemForSale);
+//     }
+//   }
+// }
 
 
 //=============================================================================
@@ -195,34 +219,36 @@ defaultproperties
   RemoteRole=ROLE_SimulatedProxy
   bAddToServerPackages=True
 
-  W_Array(0)=(PickupClass=class'KFMod.MP7MPickup',Replacement=class'W_MP7MPickup')
-  W_Array(1)=(PickupClass=class'KFMod.MP5MPickup',Replacement=class'W_MP5MPickup')
-  W_Array(2)=(PickupClass=class'KFMod.CamoMP5MPickup',Replacement=class'W_CamoMP5MPickup')
-  W_Array(3)=(PickupClass=class'KFMod.M7A3MPickup',Replacement=class'W_M7A3MPickup')
-  W_Array(4)=(PickupClass=class'KFMod.KrissMPickup',Replacement=class'W_KrissMPickup')
-  W_Array(5)=(PickupClass=class'KFMod.SinglePickup',Replacement=class'W_SinglePickup')
-  W_Array(6)=(PickupClass=class'KFMod.DualiesPickup',Replacement=class'W_DualiesPickup')
-  W_Array(7)=(PickupClass=class'KFMod.WinchesterPickup',Replacement=class'W_WinchesterPickup')
-  W_Array(8)=(PickupClass=class'KFMod.Magnum44Pickup',Replacement=class'W_Magnum44Pickup')
-  W_Array(9)=(PickupClass=class'KFMod.DeaglePickup',Replacement=class'W_DeaglePickup')
-  W_Array(10)=(PickupClass=class'KFMod.GoldenDeaglePickup',Replacement=class'W_GoldenDeaglePickup')
-  W_Array(11)=(PickupClass=class'KFMod.MK23Pickup',Replacement=class'W_MK23Pickup')
-  W_Array(12)=(PickupClass=class'KFMod.Dual44MagnumPickup',Replacement=class'W_Dual44MagnumPickup')
-  W_Array(13)=(PickupClass=class'KFMod.DualMK23Pickup',Replacement=class'W_DualMK23Pickup')
-  W_Array(14)=(PickupClass=class'KFMod.DualDeaglePickup',Replacement=class'W_DualDeaglePickup')
-  W_Array(15)=(PickupClass=class'KFMod.GoldenDualDeaglePickup',Replacement=class'W_GoldenDualDeaglePickup')
-  W_Array(16)=(PickupClass=class'KFMod.SPSniperPickup',Replacement=class'W_SPSniperPickup')
-  W_Array(17)=(PickupClass=class'KFMod.M14EBRPickup',Replacement=class'W_M14EBRPickup')
-  W_Array(18)=(PickupClass=class'KFMod.BullpupPickup',Replacement=class'W_BullpupPickup')
-  W_Array(19)=(PickupClass=class'KFMod.ThompsonPickup',Replacement=class'W_ThompsonPickup')
-  W_Array(20)=(PickupClass=class'KFMod.SPThompsonPickup',Replacement=class'W_SPThompsonPickup')
-  W_Array(21)=(PickupClass=class'KFMod.ThompsonDrumPickup',Replacement=class'W_ThompsonDrumPickup')
-  W_Array(22)=(PickupClass=class'KFMod.AK47Pickup',Replacement=class'W_AK47Pickup')
-  W_Array(23)=(PickupClass=class'KFMod.GoldenAK47pickup',Replacement=class'W_GoldenAK47Pickup')
-  W_Array(24)=(PickupClass=class'KFMod.M4Pickup',Replacement=class'W_M4Pickup')
-  W_Array(25)=(PickupClass=class'KFMod.CamoM4Pickup',Replacement=class'W_CamoM4Pickup')
-  W_Array(26)=(PickupClass=class'KFMod.MKb42Pickup',Replacement=class'W_MKb42Pickup')
-  W_Array(27)=(PickupClass=class'KFMod.SCARMK17Pickup',Replacement=class'W_SCARMK17Pickup')
-  W_Array(28)=(PickupClass=class'KFMod.FNFAL_ACOG_Pickup',Replacement=class'W_FNFAL_ACOG_Pickup')
-  W_Array(29)=(PickupClass=class'KFMod.SyringePickup',Replacement=class'W_SyringePickup')
+  W_Array[0]=(replWeapon=class'Single',replFire=class'W_SingleFire')
+
+  // W_Array(0)=(oldClass=class'KFMod.MP7MPickup',newClass=class'W_MP7MPickup')
+  // W_Array(1)=(oldClass=class'KFMod.MP5MPickup',newClass=class'W_MP5MPickup')
+  // W_Array(2)=(oldClass=class'KFMod.CamoMP5MPickup',newClass=class'W_CamoMP5MPickup')
+  // W_Array(3)=(oldClass=class'KFMod.M7A3MPickup',newClass=class'W_M7A3MPickup')
+  // W_Array(4)=(oldClass=class'KFMod.KrissMPickup',newClass=class'W_KrissMPickup')
+  // // W_Array(5)=(oldClass=class'KFMod.SinglePickup',newClass=class'W_SinglePickup')
+  // W_Array(6)=(oldClass=class'KFMod.DualiesPickup',newClass=class'W_DualiesPickup')
+  // W_Array(7)=(oldClass=class'KFMod.WinchesterPickup',newClass=class'W_WinchesterPickup')
+  // W_Array(8)=(oldClass=class'KFMod.Magnum44Pickup',newClass=class'W_Magnum44Pickup')
+  // W_Array(9)=(oldClass=class'KFMod.DeaglePickup',newClass=class'W_DeaglePickup')
+  // W_Array(10)=(oldClass=class'KFMod.GoldenDeaglePickup',newClass=class'W_GoldenDeaglePickup')
+  // W_Array(11)=(oldClass=class'KFMod.MK23Pickup',newClass=class'W_MK23Pickup')
+  // W_Array(12)=(oldClass=class'KFMod.Dual44MagnumPickup',newClass=class'W_Dual44MagnumPickup')
+  // W_Array(13)=(oldClass=class'KFMod.DualMK23Pickup',newClass=class'W_DualMK23Pickup')
+  // W_Array(14)=(oldClass=class'KFMod.DualDeaglePickup',newClass=class'W_DualDeaglePickup')
+  // W_Array(15)=(oldClass=class'KFMod.GoldenDualDeaglePickup',newClass=class'W_GoldenDualDeaglePickup')
+  // W_Array(16)=(oldClass=class'KFMod.SPSniperPickup',newClass=class'W_SPSniperPickup')
+  // W_Array(17)=(oldClass=class'KFMod.M14EBRPickup',newClass=class'W_M14EBRPickup')
+  // W_Array(18)=(oldClass=class'KFMod.BullpupPickup',newClass=class'W_BullpupPickup')
+  // W_Array(19)=(oldClass=class'KFMod.ThompsonPickup',newClass=class'W_ThompsonPickup')
+  // W_Array(20)=(oldClass=class'KFMod.SPThompsonPickup',newClass=class'W_SPThompsonPickup')
+  // W_Array(21)=(oldClass=class'KFMod.ThompsonDrumPickup',newClass=class'W_ThompsonDrumPickup')
+  // W_Array(22)=(oldClass=class'KFMod.AK47Pickup',newClass=class'W_AK47Pickup')
+  // W_Array(23)=(oldClass=class'KFMod.GoldenAK47pickup',newClass=class'W_GoldenAK47Pickup')
+  // W_Array(24)=(oldClass=class'KFMod.M4Pickup',newClass=class'W_M4Pickup')
+  // W_Array(25)=(oldClass=class'KFMod.CamoM4Pickup',newClass=class'W_CamoM4Pickup')
+  // W_Array(26)=(oldClass=class'KFMod.MKb42Pickup',newClass=class'W_MKb42Pickup')
+  // W_Array(27)=(oldClass=class'KFMod.SCARMK17Pickup',newClass=class'W_SCARMK17Pickup')
+  // W_Array(28)=(oldClass=class'KFMod.FNFAL_ACOG_Pickup',newClass=class'W_FNFAL_ACOG_Pickup')
+  // W_Array(29)=(oldClass=class'KFMod.SyringePickup',newClass=class'W_SyringePickup')
 }

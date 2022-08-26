@@ -22,12 +22,14 @@ final static function DoTraceClient(KFFire F, Vector Start, Rotator Dir)
     local KFMonster ZED;
     local bool bIsHeadshot;
 
+    log(">>> TRACING ......");
+    CsHDRI = GetCsHDRI(F);
     if (CsHDRI == none)
     {
-        CsHDRI = GetCsHDRI(F);
-        if (CsHDRI == none)
-            return;
+        log(">>> CsHDRI was none........");
+        return;
     }
+
     F.MaxRange();
     F.Weapon.GetViewAxes(X, Y, Z);
 
@@ -195,7 +197,6 @@ final static function DoTraceClientPen(KFFire F, Vector Start, Rotator Dir, byte
             break;
         }
     }
-
     if (IgnoreActors.Length > 0)
     {
         for (i = 0; i < IgnoreActors.Length; i++)

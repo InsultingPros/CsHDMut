@@ -5,6 +5,7 @@ class W_SingleFire extends SingleFire;
 function DoFireEffect()
 {
     Instigator.MakeNoise(1.0);
+    log("IM ACTIVE!!!" $ self.name);
 }
 
 
@@ -16,6 +17,7 @@ function ShakeView()
     StartTrace = Instigator.Location + Instigator.EyePosition();
     Aim = AdjustAim(StartTrace, aimerror);
     R = rotator(vector(Aim) + ((VRand() * FRand()) * Spread));
+    
     class'WeaponUtility'.static.DoTraceClient(self, StartTrace, R);
 
     super(WeaponFire).ShakeView();

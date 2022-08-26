@@ -143,6 +143,6 @@ function ServerSellWeapon(class<Weapon> WClass)
 
 defaultproperties
 {
-  RequiredEquipment[1]="CsHDMut.W_Single"
-  RequiredEquipment[3]="CsHDMut.W_Syringe"
+  // RequiredEquipment[1]="CsHDMut.W_Single"
+  // RequiredEquipment[3]="CsHDMut.W_Syringe"
 }
